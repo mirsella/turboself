@@ -1,4 +1,5 @@
 const telegramnotif = require('telegramnotif');
+const fs = require('fs-extra');
 const puppeteer = require('puppeteer-extra');
 const StealthPlugin = require('puppeteer-extra-plugin-stealth')
 puppeteer.use(StealthPlugin());
@@ -19,7 +20,6 @@ require('dotenv').config();
   // })
   const money = parseInt((await page.$eval('.prix', el => el.innerText)).split(' ')[0].replace(',', '.'))
   money <= 10 && telegramnotif(process.env.TgId, process.env.TgToken, `today is not reserved ! ${reservation.date}`)
-    .catch(e => console.log('error in telegramnotif', e))
   const reservations = await page.$$eval('.day_line', lines => {
     let reservation = []
     for (line of lines) {
@@ -53,12 +53,16 @@ require('dotenv').config();
     if (! reservation.reserved) {
       if (date.getTime() === today.getTime()) {
         telegramnotif(process.env.TgId, process.env.TgToken, `today is not reserved ! ${reservation.date}`)
-          .catch(e => console.error('error in telegramnotif', e))
       } else if (date <= nextweek) {
         telegramnotif(process.env.TgId, process.env.TgToken, `${reservation.date} is not reserved in the following week !`)
-          .catch(e => console.error('error in telegramnotif', e))
       }
     }
   }
   await browser.close()
 })()
+  .catch(e => {
+    telegramnotif(process.env.TgId, process.env.TgToken, e)
+      .catch(e => {
+        fs.writeFileSync('error.txt', e)
+      })
+  })
