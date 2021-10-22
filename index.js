@@ -1,6 +1,5 @@
 const telegramnotif = require('telegramnotif');
 const axios = require('axios')
-const fs = require('fs-extra');
 const puppeteer = require('puppeteer-extra');
 const StealthPlugin = require('puppeteer-extra-plugin-stealth')
 puppeteer.use(StealthPlugin());
@@ -73,10 +72,8 @@ require('dotenv').config();
     date.setHours(0,0,0,0);
     date.setDate(parseInt(d[1]))
     date.setMonth(months[d[2].toUpperCase()])
-    console.log(date)
 
     if (! reservation.reserved && ! nextweekblacklist.includes(date.getTime())) {
-      // console.log('not reserved', date, date.toString())
       if (date.getTime() === today.getTime()) {
         telegramnotif(process.env.TgId, process.env.TgToken, `today is not reserved ! ${reservation.date}`)
       } else if (date <= nextweek) {
