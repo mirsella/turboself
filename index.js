@@ -39,25 +39,27 @@ require('dotenv').config();
   const months = { "JAN.": 0, "FEV.": 1, "MAR.": 2, "AVR.": 3, "MAI.": 4, "JUIN.": 5, "JUIL.": 6, "AOU.": 7, "SEPT.": 8, "OCT.": 9, "NOV.": 10, "DEC.": 11 }
 
   // blacklist date
-  nextweekblacklist = []
+  blacklist = []
   await axios.get(process.env.url)
   .then(res => {
     if (res.status === 200) {
-      dateblacklist = res.data
-      d = dateblacklist.split('/')
+      dateblacklist = res.data.split('+')
+      d = dateblacklist[0].split('/')
+      // console.log(d, dateblacklist[1])
       day = d[0]
       month = d[1] - 1
       year = d[2]
       currentyear = new Date().getFullYear()
       blacklistdate = new Date(currentyear.toString().substring(0,2) + year, month, day)
-      nextweekblacklist = []
-      for (let i = 0; i<7; i+=1) {
+      blacklist = []
+      for (let i = 0; i < dateblacklist[1]; i += 1) {
         date = new Date(blacklistdate)
         date.setDate(date.getDate() + i)
-        nextweekblacklist.push(date.getTime())
+        blacklist.push(date.getTime())
       }
     }
   })
+  // console.log(blacklist)
 
   today = new Date()
   today.setHours(0,0,0,0);
@@ -72,8 +74,10 @@ require('dotenv').config();
     date.setHours(0,0,0,0);
     date.setDate(parseInt(d[1]))
     date.setMonth(months[d[2].toUpperCase()])
+    // console.log(date)
 
-    if (! reservation.reserved && ! nextweekblacklist.includes(date.getTime())) {
+    if (! reservation.reserved && ! blacklist.includes(date.getTime())) {
+      // console.log('not reserved', date.toString())
       if (date.getTime() === today.getTime()) {
         telegramnotif(process.env.TgId, process.env.TgToken, `today is not reserved ! ${reservation.date}`)
       } else if (date <= nextweek) {
