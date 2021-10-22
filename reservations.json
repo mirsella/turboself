@@ -1,0 +1,17 @@
+[
+  { "date": "JEUDI 21 OCT.", "reserved": true },
+  { "date": "VENDREDI 22 OCT.", "reserved": true },
+  { "date": "LUNDI 25 OCT.", "reserved": false },
+  { "date": "MARDI 26 OCT.", "reserved": false },
+  { "date": "MERCREDI 27 OCT.", "reserved": false },
+  { "date": "JEUDI 28 OCT.", "reserved": false },
+  { "date": "VENDREDI 29 OCT.", "reserved": false },
+  { "date": "mardi 02 nov.", "reserved": false },
+  { "date": "mercredi 03 nov.", "reserved": false },
+  { "date": "jeudi 04 nov.", "reserved": false },
+  { "date": "vendredi 05 nov.", "reserved": false },
+  { "date": "lundi 08 nov.", "reserved": false },
+  { "date": "mardi 09 nov.", "reserved": false },
+  { "date": "mercredi 10 nov.", "reserved": false },
+  { "date": "vendredi 12 nov.", "reserved": false }
+]
