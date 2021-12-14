@@ -1,5 +1,6 @@
 {
 	"dependencies": {
+		"axios": "^0.24.0",
 		"dotenv": "^10.0.0",
 		"puppeteer": "^10.4.0",
 		"puppeteer-extra": "^3.2.3",
@@ -7,6 +8,6 @@
 		"telegramnotif": "github:mirsella/telegramnotif"
 	},
 	"devDependencies": {
-		"nodemon": "^2.0.13"
+		"nodemon": "^2.0.15"
 	}
 }
