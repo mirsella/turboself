@@ -2,6 +2,7 @@ const telegramnotif = require('telegramnotif');
 const axios = require('axios')
 const puppeteer = require('puppeteer-extra');
 const StealthPlugin = require('puppeteer-extra-plugin-stealth')
+const fs = require('fs');
 puppeteer.use(StealthPlugin());
 require('dotenv').config();
 (async () => {
