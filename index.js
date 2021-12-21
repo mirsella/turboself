@@ -20,8 +20,8 @@ require('dotenv').config();
   // await page.$$eval('[id^=weeknumber_]', els => {
   //   els.map(el => el.classList.remove('hidden'))
   // })
-  const money = parseInt((await page.$eval('.prix', el => el.innerText)).split(' ')[0].replace(',', '.'))
-  money <= 6 && telegramnotif(process.env.TgId, process.env.TgToken, `money is low ${money}€`)
+  const money = parseFloat((await page.$eval('.prix', el => el.innerText)).split(' ')[0].replace(',', '.'))
+  money <= 2.56 && telegramnotif(process.env.TgId, process.env.TgToken, `money is low ${money}€`)
   const reservations = await page.$$eval('.day_line', lines => {
     let reservation = []
     for (line of lines) {
