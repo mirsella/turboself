@@ -40,7 +40,8 @@ require('dotenv').config();
   })
   browser.close()
 
-  const months = { "JANV.": 0, "FEV.": 1, "MAR.": 2, "AVR.": 3, "MAI.": 4, "JUIN.": 5, "JUIL.": 6, "AOU.": 7, "SEPT.": 8, "OCT.": 9, "NOV.": 10, "DÉC.": 11 }
+  const months = { "JANV.": 0, "FÉVR.": 1, "MAR.": 2, "AVR.": 3, "MAI.": 4, "JUIN.": 5, "JUIL.": 6, "AOU.": 7, "SEPT.": 8, "OCT.": 9, "NOV.": 10, "DÉC.": 11 }
+  // console.log(reservations)
 
   // blacklist date in format DD/MM/YY+HowManyDays ex 20/12/21+14 to blacklist christmas holidays for me
   blacklist = []
@@ -78,7 +79,6 @@ require('dotenv').config();
     date.setHours(0,0,0,0);
     date.setDate(parseInt(d[1]))
     date.setMonth(months[d[2].toUpperCase()])
-    // console.log(date)
 
     if (! reservation.reserved && ! blacklist.includes(date.getTime())) {
       // console.log('not reserved', date.toString())
@@ -91,6 +91,7 @@ require('dotenv').config();
   }
 })()
   .catch(e => {
+    console.log(e)
     telegramnotif(process.env.TgId, process.env.TgToken, 'error turboself' + e)
       .catch(e => {
         fs.writeFileSync('error.txt', e)
