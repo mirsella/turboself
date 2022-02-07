@@ -9,15 +9,20 @@ require('dotenv').config();
   const browser = await puppeteer.launch({headless:true, defaultViewport: {width: 1280, height: 720}});
   const page = await browser.newPage();
   await page.setDefaultTimeout(60000);
-  await page.goto('https://espacenumerique.turbo-self.com/Connexion.aspx', {waitUntil: 'networkidle0'});
+  await page.goto('https://espacenumerique.turbo-self.com/Connexion.aspx', {waitUntil: 'networkidle0'})
+  .catch(err => {
+    page.screenshot({path: 'screenshot.png'});
+    telegramnotif(process.env.TgId, process.env.TgToken, 'error turboself' + err)
+  });
 
   await page.type('#ctl00_cntForm_txtLogin', process.env.email)
   await page.type('#ctl00_cntForm_txtMotDePasse', process.env.passwd)
   await page.click('#ctl00_cntForm_btnConnexion')
   await page.waitForSelector('#ctl00_cntForm_UC_collapseMenu_lbtReserver')
-    .catch(err =>
-      page.screenshot({path: 'screenshot.png'})
-    );
+    .catch(err => {
+      page.screenshot({path: 'screenshot.png'});
+      telegramnotif(process.env.TgId, process.env.TgToken, 'error turboself' + err)
+    });
   await page.click('#ctl00_cntForm_UC_collapseMenu_lbtReserver')
   await page.waitForSelector('#weeknumber_3')
   // await page.$$eval('[id^=weeknumber_]', els => {
