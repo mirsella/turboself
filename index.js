@@ -62,7 +62,7 @@ require('dotenv').config();
       currentyear = new Date().getFullYear()
       blacklistdate = new Date(currentyear.toString().substring(0,2) + year, month, day)
       blacklist = []
-      for (let i = 0; i < dateblacklist[1]; i += 1) {
+      for (let i = 1; i <= dateblacklist[1] || 1; i += 1) {
         date = new Date(blacklistdate)
         date.setDate(date.getDate() + i)
         blacklist.push(date.getTime())
