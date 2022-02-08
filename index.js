@@ -70,6 +70,7 @@ require('dotenv').config();
     }
   })
   // console.log(blacklist)
+  telegramnotif(process.env.TgId, process.env.TgToken, 'turboself blacklist' + JSON.stringify(blacklist))
 
   today = new Date()
   today.setHours(0,0,0,0);
