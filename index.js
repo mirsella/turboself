@@ -6,47 +6,46 @@ const fs = require('fs');
 puppeteer.use(StealthPlugin());
 require('dotenv').config();
 (async () => {
-  const browser = await puppeteer.launch({headless:true, defaultViewport: {width: 1280, height: 720}});
-  const page = await browser.newPage();
-  await page.setDefaultTimeout(60000);
-  await page.goto('https://espacenumerique.turbo-self.com/Connexion.aspx', {waitUntil: 'networkidle0'})
-  .catch(err => {
-    page.screenshot({path: 'screenshot.png'});
-    telegramnotif(process.env.TgId, process.env.TgToken, 'error turboself' + err)
-  });
-
-  await page.type('#ctl00_cntForm_txtLogin', process.env.email)
-  await page.type('#ctl00_cntForm_txtMotDePasse', process.env.passwd)
-  await page.click('#ctl00_cntForm_btnConnexion')
-  await page.waitForSelector('#ctl00_cntForm_UC_collapseMenu_lbtReserver')
-    .catch(err => {
-      page.screenshot({path: 'screenshot.png'});
-      telegramnotif(process.env.TgId, process.env.TgToken, 'error turboself' + err)
-    });
-  await page.click('#ctl00_cntForm_UC_collapseMenu_lbtReserver')
-  await page.waitForSelector('#weeknumber_3')
-  // await page.$$eval('[id^=weeknumber_]', els => {
-  //   els.map(el => el.classList.remove('hidden'))
+  // const browser = await puppeteer.launch({headless:true, defaultViewport: {width: 1280, height: 720}});
+  // const page = await browser.newPage();
+  // await page.setDefaultTimeout(60000);
+  // await page.goto('https://espacenumerique.turbo-self.com/Connexion.aspx', {waitUntil: 'networkidle0'})
+  // .catch(err => {
+  //   page.screenshot({path: 'screenshot.png'});
+  //   telegramnotif(process.env.TgId, process.env.TgToken, 'error turboself' + err)
+  // });
+  // 
+  // await page.type('#ctl00_cntForm_txtLogin', process.env.email)
+  // await page.type('#ctl00_cntForm_txtMotDePasse', process.env.passwd)
+  // await page.click('#ctl00_cntForm_btnConnexion')
+  // await page.waitForSelector('#ctl00_cntForm_UC_collapseMenu_lbtReserver')
+  //   .catch(err => {
+  //     page.screenshot({path: 'screenshot.png'});
+  //     telegramnotif(process.env.TgId, process.env.TgToken, 'error turboself' + err)
+  //   });
+  // await page.click('#ctl00_cntForm_UC_collapseMenu_lbtReserver')
+  // await page.waitForSelector('#weeknumber_3')
+  // // await page.$$eval('[id^=weeknumber_]', els => {
+  // //   els.map(el => el.classList.remove('hidden'))
+  // // })
+  // const money = parseFloat((await page.$eval('.prix', el => el.innerText)).split(' ')[0].replace(',', '.'))
+  // money <= 2.56 && telegramnotif(process.env.TgId, process.env.TgToken, `money is low ${money}€`)
+  // const reservations = await page.$$eval('.day_line', lines => {
+  //   let reservation = []
+  //   for (line of lines) {
+  //     if (line.childElementCount > 1 && ! line.childNodes[1].className.includes('disabled')) {
+  //       // reservation.push(line)
+  //       reservation.push({
+  //         date: line.childNodes[1].innerText,
+  //         reserved: line.childNodes[2].childNodes[3].classList[1] === 'on' ? true : false
+  //       })
+  //     }
+  //   }
+  //   return reservation
   // })
-  const money = parseFloat((await page.$eval('.prix', el => el.innerText)).split(' ')[0].replace(',', '.'))
-  money <= 2.56 && telegramnotif(process.env.TgId, process.env.TgToken, `money is low ${money}€`)
-  const reservations = await page.$$eval('.day_line', lines => {
-    let reservation = []
-    for (line of lines) {
-      if (line.childElementCount > 1 && ! line.childNodes[1].className.includes('disabled')) {
-        // reservation.push(line)
-        reservation.push({
-          date: line.childNodes[1].innerText,
-          reserved: line.childNodes[2].childNodes[3].classList[1] === 'on' ? true : false
-        })
-      }
-    }
-    return reservation
-  })
-  browser.close()
+  // browser.close()
 
   const months = { "JANV.": 0, "FÉVR.": 1, "MAR.": 2, "AVR.": 3, "MAI.": 4, "JUIN.": 5, "JUIL.": 6, "AOU.": 7, "SEPT.": 8, "OCT.": 9, "NOV.": 10, "DÉC.": 11 }
-  // console.log(reservations)
 
   // blacklist date in format DD/MM/YY+HowManyDays ex 20/12/21+14 to blacklist christmas holidays for me
   blacklist = []
@@ -62,15 +61,14 @@ require('dotenv').config();
       currentyear = new Date().getFullYear()
       blacklistdate = new Date(currentyear.toString().substring(0,2) + year, month, day)
       blacklist = []
-      for (let i = 1; i <= dateblacklist[1] || 1; i += 1) {
+      for (let i = 1; i <= (dateblacklist[1] || 1); i += 1) {
         date = new Date(blacklistdate)
         date.setDate(date.getDate() + i)
         blacklist.push(date.getTime())
       }
     }
   })
-  // console.log(blacklist)
-  telegramnotif(process.env.TgId, process.env.TgToken, 'turboself blacklist' + JSON.stringify(blacklist))
+  console.log(blacklist)
 
   today = new Date()
   today.setHours(0,0,0,0);
