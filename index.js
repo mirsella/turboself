@@ -68,7 +68,7 @@ require('dotenv').config();
       }
     }
   })
-  console.log(blacklist.toString())
+  console.log("blacklist", blacklist.map(date => new Date(date).toLocaleString('fr-FR', { timeZone: 'Europe/Paris'})))
 
   today = new Date()
   today.setHours(0,0,0,0);
