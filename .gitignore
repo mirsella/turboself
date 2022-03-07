@@ -119,3 +119,4 @@ dist
 .pnp.*
 
 node/
+pnpm-lock.json
