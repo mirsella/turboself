@@ -5,6 +5,9 @@ const StealthPlugin = require('puppeteer-extra-plugin-stealth')
 const fs = require('fs');
 puppeteer.use(StealthPlugin());
 require('dotenv').config();
+
+const debug = false
+
 (async () => {
   const browser = await puppeteer.launch({headless:true, defaultViewport: {width: 1280, height: 720}});
   const page = await browser.newPage();
@@ -24,7 +27,7 @@ require('dotenv').config();
       page.screenshot({path: 'screenshot.png'});
       telegramnotif(process.env.TgId, process.env.TgToken, 'error turboself' + err)
     });
-  console.log("logged in")
+  debug && console.log("logged in")
   await page.click('#ctl00_cntForm_UC_collapseMenu_lbtReserver')
   await page.waitForSelector('#weeknumber_3')
 
@@ -54,7 +57,7 @@ require('dotenv').config();
     if (res.status === 200) {
       dateblacklist = res.data.split('+')
       d = dateblacklist[0].split('/')
-      // console.log(d, dateblacklist[1])
+      debug && console.log(d, dateblacklist[1])
       day = d[0]
       month = d[1] - 1
       year = d[2]
@@ -68,7 +71,7 @@ require('dotenv').config();
       }
     }
   })
-  console.log("blacklist", blacklist.map(date => new Date(date).toLocaleString('fr-FR', { timeZone: 'Europe/Paris'})))
+  debug && console.log("blacklist", blacklist.map(date => new Date(date).toLocaleString('fr-FR', { timeZone: 'Europe/Paris'})))
 
   today = new Date()
   today.setHours(0,0,0,0);
@@ -85,7 +88,7 @@ require('dotenv').config();
     date.setMonth(months[d[2].toUpperCase()])
 
     if (! reservation.reserved && ! blacklist.includes(date.getTime())) {
-      // console.log('not reserved', date.toString())
+      // debug && console.log('not reserved', date.toString())
       if (date.getTime() === today.getTime()) {
         telegramnotif(process.env.TgId, process.env.TgToken, `today is not reserved ! ${reservation.date}`)
       } else if (date <= nextweek) {
@@ -95,7 +98,7 @@ require('dotenv').config();
   }
 })()
   .catch(e => {
-    console.log('catch', e)
+    debug && console.log('catch', e)
     telegramnotif(process.env.TgId, process.env.TgToken, 'error turboself' + e)
       .catch(e => {
         fs.writeFileSync('error.txt', e)
