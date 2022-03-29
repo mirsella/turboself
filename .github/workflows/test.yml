@@ -9,6 +9,9 @@ jobs:
       - name: Checkout source
         uses: actions/checkout@v2
 
+      - name: setup .env
+        run: echo ${{ secrets.DOTENV }} > .env
+
       - name: npm install
         run: npm install
 
