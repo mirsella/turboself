@@ -120,3 +120,5 @@ dist
 
 node/
 pnpm-lock.json
+yarn.lock
+screenshot.png
