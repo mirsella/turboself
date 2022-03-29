@@ -17,3 +17,10 @@ jobs:
 
       - name: run test
         run: node index.js
+
+      - name: Upload screenshot debug
+        uses: actions/upload-artifact@v2
+        with:
+          name: screenshot
+          path: screenshot.png
+          retention-days: 7
