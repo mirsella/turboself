@@ -15,8 +15,5 @@ jobs:
       - name: npm install
         run: npm install
 
-      - name: log .env
-        run: cat .env
-
       - name: run test
         run: node index.js

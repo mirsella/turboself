@@ -18,7 +18,7 @@ const debug = false;
     telegramnotif(process.env.TgId, process.env.TgToken, 'error turboself' + err)
   });
 
-  await page.waitForSelector('#ctl00_cntForm_btnConnexion')
+  await page.waitForSelector('#ctl00_cntForm_txtLogin')
   await page.type('#ctl00_cntForm_txtLogin', process.env.email, { delay: 50} )
   await page.type('#ctl00_cntForm_txtMotDePasse', process.env.passwd, { delay: 50} )
   await page.click('#ctl00_cntForm_btnConnexion')
