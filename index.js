@@ -6,10 +6,48 @@ const fs = require('fs');
 puppeteer.use(StealthPlugin());
 require('dotenv').config();
 
-const debug = false;
+const debug = true;
+
+const minimal_args = [
+'--autoplay-policy=user-gesture-required',
+'--disable-background-networking',
+'--disable-background-timer-throttling',
+'--disable-backgrounding-occluded-windows',
+'--disable-breakpad',
+'--disable-client-side-phishing-detection',
+'--disable-component-update',
+'--disable-default-apps',
+'--disable-dev-shm-usage',
+'--disable-domain-reliability',
+'--disable-features=AudioServiceOutOfProcess',
+'--disable-hang-monitor',
+'--disable-ipc-flooding-protection',
+'--disable-notifications',
+'--disable-offer-store-unmasked-wallet-cards',
+'--disable-popup-blocking',
+'--disable-print-preview',
+'--disable-prompt-on-repost',
+'--disable-renderer-backgrounding',
+'--disable-setuid-sandbox',
+'--disable-speech-api',
+'--disable-sync',
+'--hide-scrollbars',
+'--ignore-gpu-blacklist',
+'--metrics-recording-only',
+'--mute-audio',
+'--no-default-browser-check',
+'--no-first-run',
+'--no-pings',
+'--no-sandbox',
+'--no-zygote',
+'--password-store=basic',
+'--use-gl=swiftshader',
+'--use-mock-keychain',
+'--allow-insecure-localhost',
+];
 
 (async () => {
-  const browser = await puppeteer.launch({headless:true, args: ["--no-sandbox", "--disable-setuid-sandbox"], defaultViewport: {width: 1280, height: 720}});
+  const browser = await puppeteer.launch({headless:true, args: minimal_args, defaultViewport: {width: 1280, height: 720}});
   const page = await browser.newPage();
   await page.setDefaultTimeout(60000);
   await page.goto('https://espacenumerique.turbo-self.com/Connexion.aspx', {waitUntil: 'networkidle0'})
@@ -64,7 +102,7 @@ const debug = false;
       currentyear = new Date().getFullYear()
       blacklistdate = new Date(currentyear.toString().substring(0,2) + year, month, day)
       blacklist = []
-      for (let i = 1; i <= (dateblacklist[1] || 1); i += 1) {
+      for (let i = 0; i <= (dateblacklist[1] || 1); i += 1) {
         date = new Date(blacklistdate)
         date.setDate(date.getDate() + i)
         blacklist.push(date.getTime())
