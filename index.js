@@ -9,7 +9,7 @@ require('dotenv').config();
 const debug = false;
 
 (async () => {
-  const browser = await puppeteer.launch({headless:true, defaultViewport: {width: 1280, height: 720}});
+  const browser = await puppeteer.launch({headless:true, args: ["--no-sandbox", "--disable-setuid-sandbox"], defaultViewport: {width: 1280, height: 720}});
   const page = await browser.newPage();
   await page.setDefaultTimeout(60000);
   await page.goto('https://espacenumerique.turbo-self.com/Connexion.aspx', {waitUntil: 'networkidle0'})
