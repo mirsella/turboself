@@ -23,11 +23,10 @@ require('dotenv').config();
       page.screenshot({path: 'screenshot.png'});
       telegramnotif(process.env.TgId, process.env.TgToken, 'error turboself' + err)
     });
+  console.log("logged in")
   await page.click('#ctl00_cntForm_UC_collapseMenu_lbtReserver')
   await page.waitForSelector('#weeknumber_3')
-  // await page.$$eval('[id^=weeknumber_]', els => {
-  //   els.map(el => el.classList.remove('hidden'))
-  // })
+
   const money = parseFloat((await page.$eval('.prix', el => el.innerText)).split(' ')[0].replace(',', '.'))
   money <= 2.56 && telegramnotif(process.env.TgId, process.env.TgToken, `money is low ${money}€`)
   const reservations = await page.$$eval('.day_line', lines => {
@@ -68,7 +67,7 @@ require('dotenv').config();
       }
     }
   })
-  // console.log("blacklist", blacklist.map(date => new Date(date).toLocaleString('fr-FR', { timeZone: 'Europe/Paris'})))
+  console.log("blacklist", blacklist.map(date => new Date(date).toLocaleString('fr-FR', { timeZone: 'Europe/Paris'})))
 
   today = new Date()
   today.setHours(0,0,0,0);
