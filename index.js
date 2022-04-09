@@ -8,7 +8,6 @@ require('dotenv').config();
 
 const debug = false;
 
-
 (async () => {
   const browser = await puppeteer.launch({headless:true, defaultViewport: {width: 1280, height: 720}});
   const page = await browser.newPage();
@@ -62,24 +61,26 @@ const debug = false;
   // blacklist date in format DD/MM/YY+HowManyDays ex 20/12/21+14 to blacklist christmas holidays for me
   blacklist = []
   await axios.get(process.env.url)
-  .then(res => {
-    if (res.status === 200) {
-      dateblacklist = res.data.split('+')
-      d = dateblacklist[0].split('/')
-      debug && console.log(d, dateblacklist[1])
-      day = d[0]
-      month = d[1] - 1
-      year = d[2]
-      currentyear = new Date().getFullYear()
-      blacklistdate = new Date(currentyear.toString().substring(0,2) + year, month, day)
-      blacklist = []
-      for (let i = 0; i <= (dateblacklist[1] || 1); i += 1) {
-        date = new Date(blacklistdate)
-        date.setDate(date.getDate() + i)
-        blacklist.push(date.getTime())
+    .then(res => {
+      const lines = res.data.split('\n')
+      if (res.status === 200) {
+        for(let i = 0; i < lines.length; i++){
+          dateblacklist = lines[i].split('+')
+          d = dateblacklist[0].split('/')
+          debug && console.log(d, dateblacklist[1])
+          day = d[0]
+          month = d[1] - 1
+          year = d[2]
+          currentyear = new Date().getFullYear()
+          blacklistdate = new Date(currentyear.toString().substring(0,2) + year, month, day)
+          for (let i = 0; i <= (dateblacklist[1] || 1); i += 1) {
+            date = new Date(blacklistdate)
+            date.setDate(date.getDate() + i)
+            blacklist.push(date.getTime())
+          }
+        }
       }
-    }
-  })
+    })
   debug && console.log("blacklist", blacklist.map(date => new Date(date).toLocaleString('fr-FR', { timeZone: 'Europe/Paris'})))
 
   today = new Date()
