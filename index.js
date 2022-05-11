@@ -56,7 +56,7 @@ const debug = false;
   })
   browser.close()
 
-  const months = { "JANV.": 0, "FÉVR.": 1, "MARS": 2, "AVR.": 3, "MAI.": 4, "JUIN.": 5, "JUIL.": 6, "AOU.": 7, "SEPT.": 8, "OCT.": 9, "NOV.": 10, "DÉC.": 11 }
+  const months = { "JANV": 0, "FÉVR": 1, "MARS": 2, "AVR": 3, "MAI": 4, "JUIN": 5, "JUIL": 6, "AOU": 7, "SEPT": 8, "OCT": 9, "NOV": 10, "DÉC": 11 }
 
   // blacklist date in format DD/MM/YY+HowManyDays ex 20/12/21+14 to blacklist christmas holidays for me
   blacklist = []
