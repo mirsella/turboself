@@ -6,7 +6,7 @@ const fs = require('fs');
 puppeteer.use(StealthPlugin());
 require('dotenv').config();
 
-const debug = false;
+const debug = true;
 
 (async () => {
   const browser = await puppeteer.launch({headless:true, defaultViewport: {width: 1280, height: 720}});
@@ -111,6 +111,7 @@ const debug = false;
     debug && console.log('catch', e)
     telegramnotif(process.env.TgId, process.env.TgToken, 'error turboself' + e)
       .catch(e => {
+        debug && console.log("catch couldn't use telegramnotif", e)
         fs.writeFileSync('error.txt', e)
       })
   })
